@@ -1,0 +1,8 @@
+import { it,expect,vi,afterEach } from 'vitest';
+import { createAuthStore } from '../../src/stores/auth';
+import { api } from '../../src/api/client';
+afterEach(()=>{vi.restoreAllMocks();api.setSession(null);});
+it('authenticates, resolves current user, and logs out',async()=>{const data=vi.spyOn(api,'data').mockResolvedValueOnce({_id:'sid'}).mockResolvedValueOnce({username:'tech',role:'Team'}).mockResolvedValueOnce({});const store=createAuthStore();expect(store.session.value).toBeNull();await store.login(' tech ','secret');expect(store.session.value).toMatchObject({username:'tech',role:'Team'});await store.logout();expect(data).toHaveBeenLastCalledWith('sessions/sid','DELETE');expect(store.session.value).toBeNull();});
+it('clears session on expiry',async()=>{vi.spyOn(api,'data').mockResolvedValueOnce({_id:'sid'}).mockResolvedValueOnce({username:'tech',role:'Team'});const store=createAuthStore();await store.login('tech','secret');api.onExpired();expect(store.session.value).toBeNull();expect(store.notice.value).toContain('expired');});
+it('never retains a failed login or password',async()=>{vi.spyOn(api,'data').mockRejectedValue(Error('invalid credentials'));const store=createAuthStore();await expect(store.login('tech','wrong')).rejects.toThrow();expect(store.session.value).toBeNull();expect(JSON.stringify(store)).not.toContain('wrong');});
+it('clears local state even if logout cannot reach the server',async()=>{vi.spyOn(api,'data').mockResolvedValueOnce({_id:'sid'}).mockResolvedValueOnce({username:'tech',role:'Team'}).mockRejectedValueOnce(Error('offline'));const store=createAuthStore();await store.login('tech','secret');await store.logout();expect(store.session.value).toBeNull();expect(store.notice.value).toContain('could not confirm');});

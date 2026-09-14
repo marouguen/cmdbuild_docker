@@ -1,0 +1,95 @@
+{
+  "_id": "u1l32b22pzdrootli7eg85ju",
+  "_definition": "CM-Execution",
+  "description": "Execution",
+  "writable": true,
+  "attributes": [
+    {
+      "_id": "Action",
+      "writable": true,
+      "mandatory": true,
+      "detail": {
+        "name": "Action",
+        "type": "lookup",
+        "description": "Action",
+        "lookupType": "Process - Action",
+        "ecqlFilter": {
+          "id": "c3moepouboozncsros1mepcttaortizgsko9mdih56tob",
+          "bindings": {
+            "server": [
+              "Id"
+            ],
+            "client": []
+          }
+        },
+        "validationRules": null
+      }
+    },
+    {
+      "_id": "Outcome",
+      "writable": true,
+      "mandatory": false,
+      "detail": {
+        "name": "Outcome",
+        "type": "lookup",
+        "description": "Outcome",
+        "lookupType": "MaintProcess - Outcome",
+        "validationRules": "api.bind = [\"Action\"];\nvar isActionCMAssignmentReject = api.getLookupCode(\"Action\") === \"CM-Assignment_Reject\";\nvar isActionCMExecutionAdvance = api.getLookupCode(\"Action\") === \"CM-Execution_Advance\";\nvar isActionCMControlBack = api.getLookupCode(\"Action\") === \"CM-Control_Back\";\nif (Ext.isEmpty(value) && (isActionCMAssignmentReject || isActionCMExecutionAdvance || isActionCMControlBack)) {\n\treturn CMDBuildUI.locales.Locales.errors.fieldrequired;\n}\nreturn true;\n"
+      }
+    },
+    {
+      "_id": "ExecStartDate",
+      "writable": true,
+      "mandatory": true,
+      "detail": {
+        "name": "ExecStartDate",
+        "type": "dateTime",
+        "description": "Execution start date",
+        "validationRules": null
+      }
+    },
+    {
+      "_id": "ExecEndDate",
+      "writable": true,
+      "mandatory": true,
+      "detail": {
+        "name": "ExecEndDate",
+        "type": "dateTime",
+        "description": "Execution end date",
+        "validationRules": "api.bind=[\"ExecStartDate\", \"ExecEndDate\"];\nif (!Ext.isEmpty(value) && value < api.getValue(\"ExecStartDate\")) {\n\treturn \"This date must be greater than the execution start date\"\n} return true;\n"
+      }
+    },
+    {
+      "_id": "ProcessNotes",
+      "writable": true,
+      "mandatory": false,
+      "detail": {
+        "name": "ProcessNotes",
+        "type": "text",
+        "description": "Notes",
+        "validationRules": "api.bind = [\"Action\"];\n// CM-Assignment management\nvar isActionCMAssignmentReject = api.getLookupCode(\"Action\") === \"CM-Assignment_Reject\";\nif (Ext.isEmpty(value) && isActionCMAssignmentReject) {\n\treturn CMDBuildUI.locales.Locales.errors.fieldrequired;\n}\n\n//CM-Control management\nvar isStepCMControl = api.activity.get(\"_definition\") === \"CM-Control\";\nvar isActionCMControlReject = api.getLookupCode(\"Action\") === \"CM-Control_Reject\";\nif (isStepCMControl && isActionCMControlReject && Ext.isEmpty(value)) {\n\treturn CMDBuildUI.locales.Locales.errors.fieldrequired;\n}\n\n// CM-Management management\nvar isStepCMManagement = api.activity.get(\"_definition\") === \"CM-Management\";\nvar isActionCMManagementReviewEstimate = api.getLookupCode(\"Action\") === \"CM-Management_ReviewEstimate\";\nif (isStepCMManagement && isActionCMManagementReviewEstimate && Ext.isEmpty(value)) {\n\treturn CMDBuildUI.locales.Locales.errors.fieldrequired;\n}\n\n// CM-Approval management\nvar isStepCMApproval = api.activity.get(\"_definition\") === \"CM-Approval\";\nvar isActionCMApprovalBack = api.getLookupCode(\"Action\") === \"CM-Approval_Back\";\nif (isStepCMApproval && isActionCMApprovalBack && Ext.isEmpty(value)) {\n\treturn CMDBuildUI.locales.Locales.errors.fieldrequired;\n}\n\nreturn true;\n"
+      }
+    },
+    {
+      "_id": "Assignee",
+      "writable": true,
+      "mandatory": false,
+      "detail": {
+        "name": "Assignee",
+        "type": "reference",
+        "description": "Assignee",
+        "targetClass": "Employee",
+        "ecqlFilter": {
+          "id": "gzww42pbc49mdclg4l0uhlcfsydd5h4xgs5ckwiu7vaxu37f",
+          "bindings": {
+            "server": [],
+            "client": [
+              "Team.Id"
+            ]
+          }
+        },
+        "validationRules": "api.bind = [\"Action\"];\n\n\t// CM-Execution management\n\tvar isStepCMExecution = api.activity.get(\"_definition\") === \"CM-Execution\";\n\tif (isStepCMExecution) {\n\t\tvar isActionCMExecutionReturn = api.getLookupCode(\"Action\") === \"CM-Execution_Return\";\n\t\tif (Ext.isEmpty(value) && isActionCMExecutionReturn) {\n\t\t\treturn CMDBuildUI.locales.Locales.errors.fieldrequired;\n\t\t}\n\t}\n\n\treturn true;\n"
+      }
+    }
+  ]
+}
