@@ -22,6 +22,23 @@ Copy `.env.example` to `.env.local` only if configuration needs changing. `VITE_
 
 The product ships with generic branding (name "Field Technician CMMS", short name "Technician", no customer name shown). A deployment overrides these in its own `.env.local` — never by editing source — with `VITE_APP_NAME`, `VITE_APP_SHORT_NAME`, and optionally `VITE_DEPLOYMENT_NAME` (shown next to "Connected to openMAINT" on the sign-in screen when set). See `.env.example`. Deployment-specific facts (real instance URLs, container names, fixture/record IDs) belong in a deployment doc such as [docs/PILOT-LAMASTORE.md](docs/PILOT-LAMASTORE.md), not in this README or the generic architecture docs.
 
+## Localization
+
+The interface is available in English and French. `src/i18n/locales/en.json` and `fr.json` hold
+every interface string; add a locale by dropping in another such file and registering it in
+`src/i18n/index.ts` — no component changes needed. The header's EN/FR selector (visible on both
+the sign-in screen and the authenticated app) calls `setLocale`, which is persisted to
+`localStorage` (`cmms-locale`) so returning users keep their choice.
+
+Only the PWA's own interface text is translated. Data returned by openMAINT — job fields, lookup
+descriptions, status/outcome labels, register/history content — is always displayed exactly as
+the server returned it, in whatever language that instance is configured for; this app does not
+translate or reinterpret backend data. The small set of English error strings thrown by
+`src/api/*.ts` and `src/stores/auth.ts` stays in English at the source (those modules have no
+i18n/UI dependency, unchanged from before localization was added); `src/i18n/errors.ts` maps that
+known, stable text to a translated message only when displaying it, and passes anything it
+doesn't recognize (including text openMAINT generated dynamically) through untouched.
+
 ## Implemented and exercised
 
 - Session login, current user, logout, expired-session handling, and permission errors.
@@ -31,6 +48,7 @@ The product ships with generic branding (name "Field Technician CMMS", short nam
 - Photo upload and authenticated document download using openMAINT DMS.
 - Manual labour/accounting entry with explicit hours and hourly rate; backend enablement checks.
 - Install manifest, generated PNG icons, responsive screens, and static-only service-worker caching.
+- English/French interface localization (vue-i18n) with a header language selector and a locally persisted choice; see [Localization](#localization).
 
 All live acceptance results so far used **admin**, not a technician. Do not interpret a successful administrator test as proof of technician permissions. See [test results](docs/TEST_RESULTS.md) and [release blockers](docs/BLOCKERS.md).
 

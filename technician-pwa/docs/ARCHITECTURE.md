@@ -11,9 +11,17 @@ knowledge, DMS, and accounting interfaces. API errors are rendered as text. Know
 register HTML use DOMPurify with a small formatting-only allowlist; remote images, links,
 styles, scripts, embedded forms, and event handlers are not rendered.
 
-Vue is the UI runtime; DOMPurify is the only additional browser runtime dependency.
-Vite, TypeScript, Vitest, and Playwright are build/test dependencies. No router or replicated
-data store is required for this milestone. Desktop and mobile use the same simple card UI.
+Vue is the UI runtime; DOMPurify and vue-i18n are the only additional browser runtime
+dependencies. Vite, TypeScript, Vitest, and Playwright are build/test dependencies. No router or
+replicated data store is required for this milestone. Desktop and mobile use the same simple
+card UI.
+
+`src/i18n` holds interface localization (English/French): locale message files, the persisted
+language selector, and `errors.ts`, which maps the small set of known, stable English strings
+`src/api/*.ts` and `stores/auth.ts` throw to a translated message at display time via pattern
+matching, without those modules importing vue-i18n themselves. This keeps the REST boundary
+framework-agnostic; any text those modules produce that isn't recognized — including messages
+openMAINT generated dynamically — is displayed exactly as received, untranslated.
 
 ## Sessions and authorization
 
