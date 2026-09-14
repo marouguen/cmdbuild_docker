@@ -1,6 +1,6 @@
-# Lamastore Technician PWA
+# Field Technician CMMS
 
-Mobile-first Vue 3 / TypeScript interface to the existing openMAINT 2.4 / CMDBuild 4.2 REST API. openMAINT owns authentication, permissions, maintenance records, accounting, documents, knowledge, and workflow state.
+Mobile-first Vue 3 / TypeScript interface to the existing openMAINT 2.4 / CMDBuild 4.2 REST API. openMAINT owns authentication, permissions, maintenance records, accounting, documents, knowledge, and workflow state. This is a reusable product; a given customer deployment (its branding, org name, and instance details) is configuration layered on top — see [Deployment configuration](#deployment-configuration) below and [docs/PILOT-LAMASTORE.md](docs/PILOT-LAMASTORE.md) for the current pilot's specifics.
 
 **Status: locally tested integration milestone, not yet cleared for production rollout.**
 Technician-account acceptance testing is blocked on credentials. Warehouse writes and preventive maintenance are not enabled.
@@ -14,9 +14,13 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-Open `http://localhost:5173`. The development proxy targets the running Lamastore instance on port 8091. Sign in with your own openMAINT account. No credentials are embedded. For a production-build preview, run `npm.cmd run build`, then `npm.cmd run preview`, and open `http://localhost:4173`.
+Open `http://localhost:5173`. The development proxy targets `OPENMAINT_ORIGIN` (defaults to `http://localhost:8091`, the current pilot's local instance). Sign in with your own openMAINT account. No credentials are embedded. For a production-build preview, run `npm.cmd run build`, then `npm.cmd run preview`, and open `http://localhost:4173`.
 
 Copy `.env.example` to `.env.local` only if configuration needs changing. `VITE_API_BASE` is the browser REST path; `OPENMAINT_ORIGIN` is the development/preview proxy target. The tested fallback DMS category type is `AlfrescoCategory`; `VITE_DMS_CATEGORY_TYPE` can override it when the process does not specify a category type.
+
+## Deployment configuration
+
+The product ships with generic branding (name "Field Technician CMMS", short name "Technician", no customer name shown). A deployment overrides these in its own `.env.local` — never by editing source — with `VITE_APP_NAME`, `VITE_APP_SHORT_NAME`, and optionally `VITE_DEPLOYMENT_NAME` (shown next to "Connected to openMAINT" on the sign-in screen when set). See `.env.example`. Deployment-specific facts (real instance URLs, container names, fixture/record IDs) belong in a deployment doc such as [docs/PILOT-LAMASTORE.md](docs/PILOT-LAMASTORE.md), not in this README or the generic architecture docs.
 
 ## Implemented and exercised
 
@@ -58,6 +62,6 @@ On a supported browser, use Install; on iOS, use Share → Add to Home Screen. A
 - [Architecture and operational limits](docs/ARCHITECTURE.md)
 - [Test results and disposable records](docs/TEST_RESULTS.md)
 - [Remaining work](docs/BLOCKERS.md)
-- [User-supplied baseline](docs/BASELINE.md)
+- [Pilot deployment: Lamastore](docs/PILOT-LAMASTORE.md)
 
 The stack follows the official [Vue quick start](https://vuejs.org/guide/quick-start.html) and [Vite guide](https://vite.dev/guide/). TypeScript is held on 5.9 because the installed Vue type checker did not work with the registry's newer TypeScript package.

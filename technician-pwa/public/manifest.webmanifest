@@ -1,5 +1,5 @@
 {
-  "id": "/", "name": "Lamastore Technician", "short_name": "Technician",
+  "id": "/", "name": "Field Technician CMMS", "short_name": "Technician",
   "description": "Your openMAINT maintenance workspace", "lang": "en",
   "start_url": "/", "scope": "/", "display": "standalone",
   "background_color": "#f2f5f1", "theme_color": "#153f37",

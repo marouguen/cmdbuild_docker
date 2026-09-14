@@ -90,7 +90,7 @@ Build-time service worker precaches a content-versioned allowlist of static app 
 Requests with query strings, cross-origin requests, API URLs, and all writes bypass that cache.
 Static cache matches ignore Vary because the Vite preview adds `Vary: Origin` to identical
 public assets; this exception is limited to the generated static allowlist. Activation removes
-old Lamastore static caches. There is no background sync or offline maintenance queue.
+old static caches from previous versions. There is no background sync or offline maintenance queue.
 
 Updates wait for old clients to close; no forced activation interrupts work. Deploy at the
 dedicated origin root and retain prior hashed assets during rollout. The local preview is not a

@@ -7,10 +7,10 @@ const hash=createHash('sha256');
 hash.update(await readFile(new URL(import.meta.url)));
 for(const file of files.filter(f=>f!=='/'))hash.update(await readFile(new URL(file.slice(1),root)));
 const version=hash.digest('hex').slice(0,16);
-await writeFile(new URL('sw.js',root),`const CACHE='lamastore-static-${version}';
+await writeFile(new URL('sw.js',root),`const CACHE='cmms-static-${version}';
 const FILES=${JSON.stringify(files)};
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
-self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('lamastore-static-')&&k!==CACHE).map(k=>caches.delete(k))))));
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('cmms-static-')&&k!==CACHE).map(k=>caches.delete(k))))));
 self.addEventListener('fetch',event=>{
  const url=new URL(event.request.url);
  if(event.request.method!=='GET'||url.origin!==self.location.origin||url.search||!FILES.includes(url.pathname))return;

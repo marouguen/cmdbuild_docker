@@ -1,4 +1,9 @@
-# User-supplied verified baseline
+# Pilot deployment: Lamastore
+
+Deployment-specific facts for the Lamastore pilot instance this product was first verified
+against. This is configuration/verification evidence for one customer's environment, not part
+of the reusable product's identity — see [ARCHITECTURE.md](ARCHITECTURE.md) and
+[OPENMAINT_API.md](OPENMAINT_API.md) for the generic, deployment-independent contract.
 
 Local openMAINT 2.4 / CMDBuild 4.2: http://localhost:8091/cmdbuild/;
 REST `/services/rest/v3/`. Docker containers `lamastore_openmaint_app`,

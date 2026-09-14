@@ -1,7 +1,8 @@
 # Verified openMAINT REST contracts
 
-Verified on the running Lamastore instance on **2026-09-14**, using admin unless stated otherwise.
-Base: `http://localhost:8091/cmdbuild/services/rest/v3/`.
+Verified on a local openMAINT/CMDBuild pilot instance on **2026-09-14**, using admin unless
+stated otherwise. See [the pilot deployment notes](PILOT-LAMASTORE.md) for instance-specific
+facts (fixture/record IDs, container names). Base: `http://localhost:8091/cmdbuild/services/rest/v3/`.
 All authenticated requests use `Cmdbuild-Authorization: <session ID>`.
 JSON responses use `{success, data, meta?: {total}}`; HTTP 200 alone does not establish success.
 Raw responses and extracted installed frontend code are local-only under ignored `investigation/`.

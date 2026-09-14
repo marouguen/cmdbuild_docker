@@ -1,5 +1,5 @@
 {
-  "name": "lamastore-technician",
+  "name": "field-technician-cmms",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,7 +7,7 @@
     "dev": "vite --host 127.0.0.1",
     "typecheck": "vue-tsc --noEmit",
     "test": "vitest run",
-    "build": "vue-tsc --noEmit && vite build && node scripts/build-sw.mjs",
+    "build": "vue-tsc --noEmit && vite build && node scripts/build-manifest.mjs && node scripts/build-sw.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "test:browser": "playwright test"
   },
