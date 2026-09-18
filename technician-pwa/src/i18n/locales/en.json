@@ -6,6 +6,18 @@
     "systemOfRecord": "openMAINT is the system of record.",
     "connectedTo": "Connected to openMAINT"
   },
+  "workspace": {
+    "requesterEyebrow": "Requester workspace",
+    "requesterTitle": "Requests",
+    "requesterBody": "The Requester workspace is connected. Request features have not been enabled yet.",
+    "managerEyebrow": "Manager workspace",
+    "managerTitle": "Maintenance management",
+    "managerBody": "The Manager workspace is connected. Management features have not been enabled yet.",
+    "unsupportedEyebrow": "Unsupported openMAINT group",
+    "unsupportedTitle": "No workspace is configured",
+    "unsupportedBody": "The active openMAINT group “{role}” is not mapped to an application workspace.",
+    "authorityNotice": "openMAINT remains authoritative for records, actions, and permissions."
+  },
   "login": {
     "eyebrow": "Maintenance, in your hands",
     "headline1": "Ready for",

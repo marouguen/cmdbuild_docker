@@ -6,6 +6,18 @@
     "systemOfRecord": "openMAINT est le système de référence.",
     "connectedTo": "Connecté à openMAINT"
   },
+  "workspace": {
+    "requesterEyebrow": "Espace demandeur",
+    "requesterTitle": "Demandes",
+    "requesterBody": "L'espace Demandeur est connecté. Les fonctionnalités de demande ne sont pas encore activées.",
+    "managerEyebrow": "Espace responsable",
+    "managerTitle": "Gestion de la maintenance",
+    "managerBody": "L'espace Responsable est connecté. Les fonctionnalités de gestion ne sont pas encore activées.",
+    "unsupportedEyebrow": "Groupe openMAINT non pris en charge",
+    "unsupportedTitle": "Aucun espace n'est configuré",
+    "unsupportedBody": "Le groupe openMAINT actif « {role} » n'est associé à aucun espace de l'application.",
+    "authorityNotice": "openMAINT reste l'autorité pour les enregistrements, les actions et les permissions."
+  },
   "login": {
     "eyebrow": "La maintenance, entre vos mains",
     "headline1": "Prêt pour",

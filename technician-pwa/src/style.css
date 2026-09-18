@@ -3,3 +3,4 @@
 @media(max-width:600px){.field-pair{grid-template-columns:1fr}}
 
 .review-modal{max-width:460px;width:calc(100% - 40px);border:1px solid var(--border);border-radius:16px;padding:24px;color:#182e2a}.review-modal::backdrop{background:#09221ba8}
+.workspace-message{max-width:620px;margin:48px auto;text-align:center}.workspace-message .hint{margin-bottom:0}
