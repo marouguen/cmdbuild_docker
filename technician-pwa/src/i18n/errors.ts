@@ -42,6 +42,9 @@ const matchers: {test: RegExp; key: string; group?: string}[] = [
   {test: /^Choose a photo smaller than 10 MB\.$/, key: 'errors.photoTooLarge'},
   {test: /^Photo upload is not permitted for this activity\.$/, key: 'errors.photoUploadNotPermitted'},
   {test: /^This category does not accept that file extension\.$/, key: 'errors.extensionNotAccepted'},
+  {test: /^Choose an attachment smaller than 10 MB\.$/, key: 'errors.attachmentTooLarge'},
+  {test: /^Attachments can only be added during writable Opening\.$/, key: 'errors.openingAttachmentOnly'},
+  {test: /^openMAINT did not resolve exactly one requester for this account\.$/, key: 'errors.requesterNotResolved'},
 ];
 export function translateError(message: string): string {
   for (const {test, key, group} of matchers) {

@@ -4,3 +4,4 @@
 
 .review-modal{max-width:460px;width:calc(100% - 40px);border:1px solid var(--border);border-radius:16px;padding:24px;color:#182e2a}.review-modal::backdrop{background:#09221ba8}
 .workspace-message{max-width:620px;margin:48px auto;text-align:center}.workspace-message .hint{margin-bottom:0}
+.request-create{margin:20px 0}.request-form{max-width:720px}.request-form textarea{min-height:120px}.request-facts{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:600px){.request-facts{grid-template-columns:1fr}}

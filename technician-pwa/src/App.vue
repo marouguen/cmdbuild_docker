@@ -4,8 +4,10 @@ import { auth } from './stores/auth';
 import { i18n, setLocale } from './i18n';
 import { translateError } from './i18n/errors';
 import AppShell from './components/AppShell.vue';
+import { installLifecycleDiagnostics } from './api/requesterDiagnostics';
+import { resolveBranding } from './config/branding.js';
 
-const {session, notice} = auth;
+const {session, notice, restoring} = auth;
 const locale = i18n.global.locale;
 const username = ref('');
 const password = ref('');
@@ -13,7 +15,7 @@ const error = ref('');
 const busy = ref(false);
 const online = ref(navigator.onLine);
 const install = ref<(Event & {prompt: () => Promise<void>}) | null>(null);
-const appShortName = (import.meta.env.VITE_APP_SHORT_NAME as string | undefined) || 'Technician';
+const {appShortName} = resolveBranding(import.meta.env);
 const deploymentName = import.meta.env.VITE_DEPLOYMENT_NAME as string | undefined;
 
 async function login() {
@@ -41,6 +43,8 @@ onMounted(() => {
   window.addEventListener('online', updateOnline);
   window.addEventListener('offline', updateOnline);
   window.addEventListener('beforeinstallprompt', installPrompt);
+  void auth.restore();
+  installLifecycleDiagnostics();
 });
 onBeforeUnmount(() => {
   window.removeEventListener('online', updateOnline);
@@ -65,8 +69,9 @@ onBeforeUnmount(() => {
     </div>
   </header>
   <div v-if="!online" class="offline" role="status">{{ $t('app.offline') }}</div>
-  <main :class="{login: !session}">
-    <template v-if="!session">
+  <main :class="{login: !session && !restoring}">
+    <section v-if="restoring" class="panel restore-session" role="status"><p class="eyebrow">{{ $t('login.restoringEyebrow') }}</p><p>{{ $t('login.restoringSession') }}</p></section>
+    <template v-else-if="!session">
       <div class="welcome">
         <p class="eyebrow">{{ $t('login.eyebrow') }}</p>
         <h1>{{ $t('login.headline1') }}<br>{{ $t('login.headline2') }}</h1>

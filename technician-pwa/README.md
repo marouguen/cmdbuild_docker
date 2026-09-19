@@ -1,4 +1,4 @@
-# Field Technician CMMS
+# Maintenance Hub
 
 Mobile-first Vue 3 / TypeScript interface to the existing openMAINT 2.4 / CMDBuild 4.2 REST API. openMAINT owns authentication, permissions, maintenance records, accounting, documents, knowledge, and workflow state. This is a reusable product; a given customer deployment (its branding, org name, and instance details) is configuration layered on top — see [Deployment configuration](#deployment-configuration) below and [docs/PILOT-LAMASTORE.md](docs/PILOT-LAMASTORE.md) for the current pilot's specifics.
 
@@ -20,7 +20,7 @@ Copy `.env.example` to `.env.local` only if configuration needs changing. `VITE_
 
 ## Deployment configuration
 
-The product ships with generic branding (name "Field Technician CMMS", short name "Technician", no customer name shown). A deployment overrides these in its own `.env.local` — never by editing source — with `VITE_APP_NAME`, `VITE_APP_SHORT_NAME`, and optionally `VITE_DEPLOYMENT_NAME` (shown next to "Connected to openMAINT" on the sign-in screen when set). See `.env.example`. Deployment-specific facts (real instance URLs, container names, fixture/record IDs) belong in a deployment doc such as [docs/PILOT-LAMASTORE.md](docs/PILOT-LAMASTORE.md), not in this README or the generic architecture docs.
+The product ships with generic multi-role branding (name "Maintenance Hub", short name "Maintenance", no customer name shown). A deployment overrides these in its own `.env.local` — never by editing source — with `VITE_APP_NAME`, `VITE_APP_SHORT_NAME`, and optionally `VITE_DEPLOYMENT_NAME` (shown next to "Connected to openMAINT" on the sign-in screen when set). See `.env.example`. Deployment-specific facts (real instance URLs, container names, fixture/record IDs) belong in a deployment doc such as [docs/PILOT-LAMASTORE.md](docs/PILOT-LAMASTORE.md), not in this README or the generic architecture docs.
 
 ## Localization
 

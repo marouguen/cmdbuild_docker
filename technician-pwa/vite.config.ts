@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv, type ProxyOptions } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import { resolveBranding } from './src/config/branding.js';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '');
   const proxy: Record<string, ProxyOptions> = { '/cmdbuild/services/rest/v3': {
@@ -12,7 +13,7 @@ export default defineConfig(({mode}) => {
     }
   }};
   // Reusable product default; a deployment overrides it with VITE_APP_NAME in its own .env.local.
-  const appName = env.VITE_APP_NAME || 'Field Technician CMMS';
+  const {appName} = resolveBranding(env);
   const html = {name: 'app-name-html', transformIndexHtml: (source: string) => source.replace(/__APP_NAME__/g, appName)};
   return { plugins: [vue(), html], server: {port: 5173, strictPort: true, proxy}, preview: {port: 4173, strictPort: true, proxy} };
 });
