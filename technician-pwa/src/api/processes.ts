@@ -23,8 +23,8 @@ export function metadataFilter(attribute: ActivityAttribute, job: Card, values: 
   }
   return {ecql: {id: ecql.id, context: {server, client}}};
 }
-export async function choices(attribute: ActivityAttribute, job: Card) {
-  const filter = metadataFilter(attribute, job);
+export async function choices(attribute: ActivityAttribute, job: Card, values: Record<string, unknown> = {}) {
+  const filter = metadataFilter(attribute, job, values);
   const path = attribute.detail.lookupType ? `lookup_types/${encode(attribute.detail.lookupType)}/values` : attribute.detail.targetClass ? `classes/${encode(attribute.detail.targetClass)}/cards` : null;
   if (!path) return [];
   return api.data<(Lookup | Card)[]>(path + '?limit=100&' + (filter ? filterQuery(filter) : ''));

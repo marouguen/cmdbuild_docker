@@ -1,8 +1,18 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import type { AssignmentQueueItem } from '../api/manager';
+import AssignmentQueue from '../components/manager/AssignmentQueue.vue';
+import AssignmentDetail from '../components/manager/AssignmentDetail.vue';
+
+const selected = ref<AssignmentQueueItem | null>(null);
+const queueKey = ref(0);
+function back(refresh = false) {
+  selected.value = null;
+  if (refresh) queueKey.value++;
+}
+</script>
+
 <template>
-  <section class="panel workspace-message">
-    <p class="eyebrow">{{ $t('workspace.managerEyebrow') }}</p>
-    <h1>{{ $t('workspace.managerTitle') }}</h1>
-    <p>{{ $t('workspace.managerBody') }}</p>
-    <p class="hint">{{ $t('workspace.authorityNotice') }}</p>
-  </section>
+  <AssignmentQueue v-if="!selected" :key="queueKey" @open="selected = $event" />
+  <AssignmentDetail v-else :source="selected" @back="back" />
 </template>
