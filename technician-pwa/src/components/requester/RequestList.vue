@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { listRequests } from '../../api/requester';
+import { getRequestActivities, listRequests } from '../../api/requester';
+import { approvalActivity } from '../../api/requesterApproval';
 import { translateError } from '../../i18n/errors';
 import type { Card } from '../../types/api';
 import { formatDateTime } from '../../i18n/date';
 
 const emit = defineEmits<{open: [card: Card]; create: []}>();
 const cards = ref<Card[]>([]), total = ref(0), busy = ref(false), error = ref(''), query = ref('');
+const awaitingApproval = ref(new Set<number>());
 const label = (card: Card, key: string) => String(card[`_${key}_description_translation`] ?? card[`_${key}_description`] ?? card[`_${key}_code`] ?? '');
 const location = (card: Card) => [label(card, 'Site'), label(card, 'Floor'), label(card, 'Room')].filter(Boolean).join(' · ');
 const requestText = (card: Card) => [card.Number, card.ShortDescr, label(card,'Priority'), label(card,'ProcessStatus'), label(card,'CI'), location(card)].join(' ');
@@ -15,7 +17,15 @@ const shown = computed(() => { const term = query.value.trim().toLocaleLowerCase
 async function load(more = false) {
   if (busy.value) return;
   busy.value = true; error.value = '';
-  try { const response = await listRequests(more ? cards.value.length : 0); cards.value = more ? [...cards.value, ...response.data] : response.data; total.value = response.meta?.total ?? cards.value.length; }
+  awaitingApproval.value = new Set();
+  try {
+    const response = await listRequests(more ? cards.value.length : 0);
+    cards.value = more ? [...cards.value, ...response.data] : response.data;
+    total.value = response.meta?.total ?? cards.value.length;
+    const results = await Promise.allSettled(cards.value.map(async card => approvalActivity(await getRequestActivities(card._id)) ? card._id : null));
+    // An unavailable activity cannot imply eligibility; keep the server-visible request itself.
+    awaitingApproval.value = new Set(results.flatMap(result => result.status === 'fulfilled' && result.value !== null ? [result.value] : []));
+  }
   catch (reason) { error.value = translateError((reason as Error).message); }
   finally { busy.value = false; }
 }
@@ -31,6 +41,6 @@ onMounted(() => load());
   <p v-if="error" class="error" role="alert">{{ error }} <button class="text-button" @click="load()">{{ $t('jobs.retry') }}</button></p>
   <p v-if="busy && !cards.length" class="skeleton" role="status">{{ $t('requester.loading') }}</p>
   <section v-else-if="!shown.length" class="empty panel"><h2>{{ $t('requester.empty') }}</h2><p>{{ query ? $t('requester.emptySearch') : $t('requester.emptyDefault') }}</p></section>
-  <div class="jobs"><button v-for="card in shown" :key="card._id" class="job-card" @click="emit('open', card)"><div class="section-heading"><span class="job-number">{{ card.Number || card._id }}</span><span class="priority">{{ label(card, 'Priority') || $t('jobs.noPriority') }}</span></div><h2>{{ card.ShortDescr || card.Description }}</h2><p class="equipment">{{ label(card, 'CI') || $t('jobs.equipmentUnknown') }}</p><p class="location">{{ location(card) || $t('jobs.locationUnknown') }}</p><div class="card-footer"><span class="badge">{{ label(card, 'ProcessStatus') }}</span><span class="muted">{{ formatDateTime(card.OpeningDate) }}</span><span aria-hidden="true">→</span></div></button></div>
+  <div class="jobs"><button v-for="card in shown" :key="card._id" class="job-card" @click="emit('open', card)"><div class="section-heading"><span class="job-number">{{ card.Number || card._id }}</span><span class="priority">{{ label(card, 'Priority') || $t('jobs.noPriority') }}</span></div><h2>{{ card.ShortDescr || card.Description }}</h2><p class="equipment">{{ label(card, 'CI') || $t('jobs.equipmentUnknown') }}</p><p class="location">{{ location(card) || $t('jobs.locationUnknown') }}</p><p v-if="awaitingApproval.has(card._id)" class="badge">{{ $t('requester.approval.awaiting') }}</p><div class="card-footer"><span class="badge">{{ label(card, 'ProcessStatus') }}</span><span class="muted">{{ formatDateTime(card.OpeningDate) }}</span><span aria-hidden="true">→</span></div></button></div>
   <button v-if="cards.length < total" class="secondary wide" :disabled="busy" @click="load(true)">{{ busy ? $t('jobs.loadingMore') : $t('jobs.loadMore') }}</button>
 </template>

@@ -19,6 +19,21 @@
     "authorityNotice": "openMAINT reste l'autorité pour les enregistrements, les actions et les permissions."
   },
   "requester": {
+    "approval": {
+      "awaiting": "En attente de votre approbation",
+      "execution": "Informations d'exécution",
+      "team": "Équipe",
+      "outcome": "Résultat",
+      "start": "Début d'exécution",
+      "end": "Fin d'exécution",
+      "register": "Notes de maintenance",
+      "hint": "Confirmez que le problème est résolu pour clôturer cette demande. Ses détails et son historique resteront dans Mes demandes.",
+      "note": "Note de clôture",
+      "submitting": "Clôture de la demande…",
+      "completed": "Demande terminée. Ses détails et son historique restent consultables dans Mes demandes.",
+      "unavailable": "Cette demande n'est pas disponible pour l'approbation finale. Actualisez pour vérifier son état actuel.",
+      "checkBeforeRetry": "Actualisez et vérifiez l'état actuel avant toute nouvelle tentative."
+    },
     "eyebrow": "Espace demandeur",
     "myRequests": "Mes demandes",
     "listSubtitle": "Demandes renvoyées pour votre compte par openMAINT.",
@@ -290,6 +305,12 @@
     "sparePartsHint": "La saisie de pièces détachées n'est pas encore disponible. L'intégration liée au stock doit encore être validée."
   },
   "errors": {
+    "approvalUnavailable": "Cette demande n'attend plus votre approbation. Actualisez pour voir son état actuel.",
+    "requestNotVisible": "Cette demande n'est plus disponible dans Mes demandes.",
+    "requestListUnverified": "La liste des demandes a changé ou n'a pas pu être vérifiée. Actualisez Mes demandes.",
+    "issueSolvedUnavailable": "openMAINT n'autorise pas actuellement l'action de résolution du problème.",
+    "approvalPending": "Une approbation de la demande est déjà en cours.",
+    "completionUnconfirmed": "openMAINT n'a pas confirmé la clôture de la demande. Actualisez avant toute autre action.",
     "invalidApiPath": "Chemin d'API invalide",
     "connectionInterrupted": "Connexion interrompue. Le serveur a peut-être enregistré cette modification. Actualisez et vérifiez avant de réessayer.",
     "unreachable": "Impossible de joindre openMAINT. Vérifiez votre connexion et réessayez.",

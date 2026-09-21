@@ -6,6 +6,12 @@ import { i18n } from './index';
 // openMAINT itself returned dynamically — passes through untouched, in whatever language the
 // server produced it.
 const matchers: {test: RegExp; key: string; group?: string}[] = [
+  {test: /^This request is no longer awaiting your approval\. Refresh it to see its current state\.$/, key: 'errors.approvalUnavailable'},
+  {test: /^This request is no longer available in My Requests\.$/, key: 'errors.requestNotVisible'},
+  {test: /^The request list changed or could not be verified\. Refresh My Requests\.$/, key: 'errors.requestListUnverified'},
+  {test: /^Issue solved is not currently allowed by openMAINT\.$/, key: 'errors.issueSolvedUnavailable'},
+  {test: /^Request approval is already in progress\.$/, key: 'errors.approvalPending'},
+  {test: /^openMAINT did not confirm that the request completed\. Refresh before taking any further action\.$/, key: 'errors.completionUnconfirmed'},
   {test: /^This request is no longer available for Accounting\. Refresh it to see its current state\.$/, key: 'errors.accountingUnavailable'},
   {test: /^Approve is not currently allowed by openMAINT\.$/, key: 'errors.approveNotAllowed'},
   {test: /^Accounting approval is already in progress\.$/, key: 'errors.accountingPending'},

@@ -19,6 +19,21 @@
     "authorityNotice": "openMAINT remains authoritative for records, actions, and permissions."
   },
   "requester": {
+    "approval": {
+      "awaiting": "Awaiting your approval",
+      "execution": "Execution information",
+      "team": "Team",
+      "outcome": "Outcome",
+      "start": "Execution start",
+      "end": "Execution end",
+      "register": "Maintenance notes",
+      "hint": "Confirm that the issue is solved to close this request. Its details and history will remain in My Requests.",
+      "note": "Closing note",
+      "submitting": "Closing request…",
+      "completed": "Request completed. You can still review its details and history in My Requests.",
+      "unavailable": "This request is not currently available for final approval. Refresh to check its current state.",
+      "checkBeforeRetry": "Refresh and check the current state before attempting another action."
+    },
     "eyebrow": "Requester workspace",
     "myRequests": "My requests",
     "listSubtitle": "Requests returned for your account by openMAINT.",
@@ -290,6 +305,12 @@
     "sparePartsHint": "Spare-part entry is not available yet. Stock-backed integration still needs validation."
   },
   "errors": {
+    "approvalUnavailable": "This request is no longer awaiting your approval. Refresh it to see its current state.",
+    "requestNotVisible": "This request is no longer available in My Requests.",
+    "requestListUnverified": "The request list changed or could not be verified. Refresh My Requests.",
+    "issueSolvedUnavailable": "Issue solved is not currently allowed by openMAINT.",
+    "approvalPending": "Request approval is already in progress.",
+    "completionUnconfirmed": "openMAINT did not confirm that the request completed. Refresh before taking any further action.",
     "invalidApiPath": "Invalid API path",
     "connectionInterrupted": "Connection interrupted. The server may have saved this change. Refresh and check before retrying.",
     "unreachable": "Cannot reach openMAINT. Check your connection and retry.",
