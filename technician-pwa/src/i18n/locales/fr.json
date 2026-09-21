@@ -115,7 +115,31 @@
     "history": "Chronologie",
     "noHistory": "Aucune entrée d'historique renvoyée.",
     "attachments": "Pièces jointes",
-    "noAttachments": "Aucune pièce jointe."
+    "noAttachments": "Aucune pièce jointe.",
+    "accounting": {
+      "backToQueue": "File de comptabilisation",
+      "refreshDetail": "Actualiser le détail de comptabilisation",
+      "loadingDetail": "Chargement du détail de comptabilisation…",
+      "queue": "Comptabilisation",
+      "refreshQueue": "Actualiser la file de comptabilisation",
+      "queueSubtitle": "Interventions exécutées en attente de votre vérification.",
+      "search": "Rechercher les demandes à comptabiliser",
+      "searchPlaceholder": "Référence, objet, équipement ou équipe",
+      "loadingQueue": "Chargement des demandes à comptabiliser...",
+      "emptyQueue": "Aucune demande à comptabiliser",
+      "emptyQueueBody": "Aucune demande ne vous autorise actuellement à effectuer la comptabilisation.",
+      "execution": "Informations d'exécution",
+      "outcome": "Résultat",
+      "start": "Début d'exécution",
+      "end": "Fin d'exécution",
+      "confirmed": "Approbation confirmée. Activité actuelle : {state} ; rôle responsable : {performer}.",
+      "unavailable": "Cette demande n'est plus disponible pour une action de comptabilisation.",
+      "hint": "Vérifiez l'exécution et approuvez pour transmettre la demande au demandeur.",
+      "note": "Note du gestionnaire",
+      "approving": "Approbation en cours...",
+      "checkBeforeRetry": "Actualisez et vérifiez l'activité actuelle avant toute nouvelle tentative."
+    },
+    "workQueues": "Files de travail du gestionnaire"
   },
   "login": {
     "eyebrow": "La maintenance, entre vos mains",
@@ -310,6 +334,11 @@
     "extensionNotAccepted": "Cette catégorie n'accepte pas ce type de fichier.",
     "attachmentTooLarge": "Choisissez une pièce jointe de moins de 10 Mo.",
     "openingAttachmentOnly": "Les pièces jointes ne peuvent être ajoutées que pendant une étape d'ouverture modifiable.",
-    "requesterNotResolved": "openMAINT n'a pas identifié un demandeur unique pour ce compte."
+    "requesterNotResolved": "openMAINT n'a pas identifié un demandeur unique pour ce compte.",
+    "accountingUnavailable": "Cette demande n'est plus disponible pour la comptabilisation. Actualisez pour voir son état actuel.",
+    "approveNotAllowed": "openMAINT n'autorise pas actuellement l'approbation.",
+    "accountingPending": "Une approbation est déjà en cours.",
+    "accountingUnconfirmed": "openMAINT n'a pas confirmé le passage à l'approbation du demandeur. Actualisez avant toute autre action.",
+    "queueChanged": "La file a changé pendant le chargement. Actualisez-la."
   }
 }

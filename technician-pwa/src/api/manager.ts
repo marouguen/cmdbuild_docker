@@ -26,18 +26,42 @@ export function actionableAssignments(cards: Card[], activities: Map<number, Act
   });
 }
 
-export async function listAssignmentQueue() {
+async function listManagerCards() {
   const cards: Card[] = [];
   let start = 0;
   let total = 0;
   do {
     const response = await api.request<Card[]>(processPath() + `?limit=100&start=${start}`);
+    if (!response.data.length && start < total) throw new Error('The queue changed while loading. Refresh it.');
     cards.push(...response.data);
     total = response.meta?.total ?? cards.length;
     start = cards.length;
   } while (start < total);
+  if (new Set(cards.map(card => card._id)).size !== cards.length) throw new Error('The queue changed while loading. Refresh it.');
+  return cards;
+}
+
+export async function listAssignmentQueue() {
+  const cards = await listManagerCards();
   const pairs = await Promise.all(cards.map(async card => [card._id, await getActivities(card._id)] as const));
   return actionableAssignments(cards, new Map(pairs));
+}
+
+export function isWritableAccounting(activity: Activity | null | undefined) {
+  return activity?._definition === 'CM-Accounting' && activity.performer === 'MaintOffice' && activity.writable === true;
+}
+
+export function actionableAccounting(cards: Card[], activities: Map<number, Activity[]>) {
+  return cards.flatMap(card => {
+    const current = activities.get(card._id) ?? [];
+    return current.length === 1 && isWritableAccounting(current[0]) ? [{card, activity: current[0]}] : [];
+  });
+}
+
+export async function listAccountingQueue() {
+  const cards = await listManagerCards();
+  const pairs = await Promise.all(cards.map(async card => [card._id, await getActivities(card._id)] as const));
+  return actionableAccounting(cards, new Map(pairs));
 }
 
 export function assertWritableAssignment(activity: Activity) {

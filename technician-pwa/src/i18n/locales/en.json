@@ -115,7 +115,31 @@
     "history": "Timeline",
     "noHistory": "No history entries returned.",
     "attachments": "Attachments",
-    "noAttachments": "No attachments."
+    "noAttachments": "No attachments.",
+    "accounting": {
+      "backToQueue": "Accounting queue",
+      "refreshDetail": "Refresh Accounting detail",
+      "loadingDetail": "Loading Accounting detail…",
+      "queue": "Accounting",
+      "refreshQueue": "Refresh Accounting queue",
+      "queueSubtitle": "Completed execution ready for your accounting review.",
+      "search": "Search Accounting work",
+      "searchPlaceholder": "Search reference, subject, equipment or team",
+      "loadingQueue": "Loading Accounting work...",
+      "emptyQueue": "No Accounting work",
+      "emptyQueueBody": "No requests currently allow you to perform Accounting.",
+      "execution": "Execution information",
+      "outcome": "Outcome",
+      "start": "Execution start",
+      "end": "Execution end",
+      "confirmed": "Approved. Current activity: {state}; responsible role: {performer}.",
+      "unavailable": "This request is no longer available for Accounting action.",
+      "hint": "Review the execution and approve to send this request to the requester.",
+      "note": "Manager note",
+      "approving": "Approving...",
+      "checkBeforeRetry": "Refresh and check the current activity before attempting another action."
+    },
+    "workQueues": "Manager work queues"
   },
   "login": {
     "eyebrow": "Maintenance, in your hands",
@@ -310,6 +334,11 @@
     "extensionNotAccepted": "This category does not accept that file extension.",
     "attachmentTooLarge": "Choose an attachment smaller than 10 MB.",
     "openingAttachmentOnly": "Attachments can only be added during writable Opening.",
-    "requesterNotResolved": "openMAINT did not resolve exactly one requester for this account."
+    "requesterNotResolved": "openMAINT did not resolve exactly one requester for this account.",
+    "accountingUnavailable": "This request is no longer available for Accounting. Refresh it to see its current state.",
+    "approveNotAllowed": "Approve is not currently allowed by openMAINT.",
+    "accountingPending": "Accounting approval is already in progress.",
+    "accountingUnconfirmed": "openMAINT did not confirm Approval for Requester. Refresh before taking any further action.",
+    "queueChanged": "The queue changed while loading. Refresh it."
   }
 }

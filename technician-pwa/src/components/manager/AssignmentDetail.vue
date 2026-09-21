@@ -4,7 +4,7 @@ import { downloadAttachment } from '../../api/attachments';
 import { assignmentAttribute, assignmentChoices, assignToTeam, isAssignmentReadOnly, resolveAssignAction, type AssignmentDraft, type AssignmentQueueItem } from '../../api/manager';
 import { getOriginalRequestNotes, getRequest, getRequestActivities, getRequestActivity, getRequestAttachments, getRequestHistory } from '../../api/requester';
 import { translateError } from '../../i18n/errors';
-import { formatDateTime } from '../../i18n/date';
+import ManagerRequestContext from './ManagerRequestContext.vue';
 import type { Activity, Attachment, Card, Lookup } from '../../types/api';
 
 const props=defineProps<{source:AssignmentQueueItem}>();
@@ -17,7 +17,6 @@ const readOnly=computed(()=>isAssignmentReadOnly(activity.value,action.value)||B
 const label=(card:Card,key:string)=>String(card[`_${key}_description_translation`]??card[`_${key}_description`]??card[`_${key}_code`]??'');
 const optionLabel=(item:Lookup|Card)=>{const value=item as Record<string,unknown>;return String(value._description_translation??value.description??value.Description??value._description??value.Code??value.code??value._id);};
 const attr=(id:string)=>activity.value?assignmentAttribute(activity.value,id):undefined;
-const location=computed(()=>request.value?[label(request.value,'Site'),label(request.value,'Floor'),label(request.value,'Room')].filter(Boolean).join(' · '):'');
 const localDate=(value:unknown)=>{if(!value)return '';const date=new Date(String(value));if(!Number.isFinite(date.getTime()))return '';const offset=date.getTimezoneOffset()*60000;return new Date(date.getTime()-offset).toISOString().slice(0,16);};
 
 async function loadChoices(field:string){return activity.value&&request.value?assignmentChoices(activity.value,field,request.value,draft):[];}
@@ -52,7 +51,7 @@ onMounted(load);
     <header class="job-header"><p class="eyebrow">{{ request.Number }}</p><h1>{{ request.ShortDescr }}</h1><span class="badge">{{ resultActivity?.description||activity?.description||label(request,'ProcessStatus') }}</span></header>
     <p v-if="success" class="success" role="status">{{ $t('manager.assignmentConfirmed',{state:success,performer:resultActivity?._performer_description||resultActivity?.performer||'—'}) }}</p>
     <section class="panel"><div class="section-heading"><h2>{{ $t('manager.currentActivity') }}</h2><span class="badge">{{ resultActivity?.description||activity?.description||label(request,'ProcessStatus') }}</span></div><p class="muted">{{ $t('manager.responsible') }}: {{ resultActivity?._performer_description||resultActivity?.performer||activity?._performer_description||activity?.performer||'—' }}</p><p v-if="readOnly&&!resultActivity" class="hint">{{ $t('manager.readOnly') }}</p></section>
-    <section class="panel"><h2>{{ $t('manager.requestDetails') }}</h2><dl class="facts request-facts"><div><dt>{{ $t('manager.priority') }}</dt><dd>{{ label(request,'Priority')||'—' }}</dd></div><div><dt>{{ $t('manager.type') }}</dt><dd>{{ label(request,'Type')||'—' }}</dd></div><div><dt>{{ $t('manager.requester') }}</dt><dd>{{ label(request,'Requester')||'—' }}</dd></div><div><dt>{{ $t('manager.openingDate') }}</dt><dd>{{ formatDateTime(request.OpeningDate)||'—' }}</dd></div><div><dt>{{ $t('manager.siteLocation') }}</dt><dd>{{ location||'—' }}</dd></div><div><dt>{{ $t('manager.equipment') }}</dt><dd>{{ label(request,'CI')||'—' }}</dd></div><div><dt>{{ $t('manager.category') }}</dt><dd>{{ label(request,'Category')||'—' }}</dd></div><div><dt>{{ $t('manager.subcategory') }}</dt><dd>{{ label(request,'Subcategory')||'—' }}</dd></div></dl><h3>{{ $t('manager.originalNotes') }}</h3><p class="prose">{{ originalNotes||$t('manager.noNotes') }}</p></section>
+    <ManagerRequestContext :request="request" :original-notes="originalNotes" :history="history" :attachments="attachments" :busy="busy" @download="download">
     <form v-if="!readOnly&&activity&&action" class="panel request-form" @submit.stop.prevent="submit"><h2>{{ action.description }}</h2><p class="hint">{{ $t('manager.liveMetadataHint') }}</p><fieldset :disabled="busy">
       <label v-if="attr('Site')?.writable">{{ $t('manager.site') }}<select v-model="draft.Site" required><option :value="undefined" disabled>{{ $t('manager.choose') }}</option><option v-for="item in sites" :key="item._id" :value="item._id">{{ optionLabel(item) }}</option></select></label>
       <div class="field-pair"><label v-if="attr('Category')?.writable">{{ $t('manager.category') }}<select v-model="draft.Category" required><option :value="undefined" disabled>{{ $t('manager.choose') }}</option><option v-for="item in categories" :key="item._id" :value="item._id">{{ optionLabel(item) }}</option></select></label><label v-if="attr('Subcategory')?.writable">{{ $t('manager.subcategory') }}<select v-model="draft.Subcategory" :disabled="!draft.Category" required><option :value="undefined" disabled>{{ $t('manager.choose') }}</option><option v-for="item in subcategories" :key="item._id" :value="item._id">{{ optionLabel(item) }}</option></select></label></div>
@@ -62,7 +61,7 @@ onMounted(load);
       <label v-if="attr('ProcessNotes')?.writable">{{ $t('manager.notes') }}<textarea v-model="draft.ProcessNotes" rows="4"></textarea></label>
       <button type="submit" class="primary wide">{{ busy?$t('manager.assigning'):$t('manager.assign') }}</button>
     </fieldset></form>
-    <section class="panel"><h2>{{ $t('manager.history') }}</h2><p v-if="!history.length" class="empty">{{ $t('manager.noHistory') }}</p><article v-for="row in history" :key="String(row._id)+row._beginDate" class="resource-card"><strong>{{ row._activity_description||row._historyType }}</strong><p>{{ formatDateTime(row._beginDate) }}<template v-if="row._endDate"> → {{ formatDateTime(row._endDate) }}</template> · {{ row.__user_description||row._user }}</p></article></section>
-    <section class="panel"><h2>{{ $t('manager.attachments') }}</h2><p v-if="!attachments.length" class="empty">{{ $t('manager.noAttachments') }}</p><button v-for="item in attachments" :key="item._id" type="button" class="topic-card" :disabled="busy" @click="download(item)"><span><strong>{{ item.name }}</strong><small>{{ item._category_description }}</small></span><span aria-hidden="true">↓</span></button></section>
+    </ManagerRequestContext>
+
   </template>
 </template>
